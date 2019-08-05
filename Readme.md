@@ -1,7 +1,7 @@
 # Личный проект «Менеджер задач» [![Build status][travis-image]][travis-url]
 
 * Студент: [Chin Wag](https://up.htmlacademy.ru/ecmascript/9/user/829185).
-* Наставник: `Неизвестно`.
+* Наставник: `Денис Быков`.
 
 ---
 
