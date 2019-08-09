@@ -8,8 +8,11 @@ Thumbs.db
 .vscode
 
 # Вспомогательные файлы
+webpack.config.js
 *.log*
 node_modules/
 
 # Папка с собранными файлами проекта
 build/
+public/bundle.js.map
+
