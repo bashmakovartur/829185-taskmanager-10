@@ -1,9 +1,9 @@
-export const task = {
+export const data = {
   descriptions: [`Изучить теорию`, `Сделать домашку`, `Пройти интенсив на соточку`],
   get description() {
     return this.descriptions[Math.floor(Math.random() * this.descriptions.length)];
   },
-  dueDate: Date.now(),
+  dueDate: Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000,
   isRepeating: Boolean(Math.round(Math.random())),
   repeatingDays: {
     Mo: Boolean(Math.round(Math.random())),
@@ -18,8 +18,6 @@ export const task = {
     `homework`,
     `theory`,
     `practice`,
-    `intensive`,
-    `keks`
   ]),
   colors: [
     `black`,

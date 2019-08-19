@@ -1,33 +1,17 @@
 export const createTaskTemplate = (task) => {
-  let taskColor = `card--${task.color}`;
-
-  //desc
-  let description = ``;
-  if (task.description) {
-    description = task.description;
-  }
-
-  //repDays
-  let isRepDays = ``;
-  if (task.isRepeating) {
-    isRepDays = `card--repeat`;
-  }
-
-  //tags
-  for (let key in task.tags) {
-    `<div class="card__hashtag-list">
-                <span class="card__hashtag-inner">
-                  <span class="card__hashtag-name">
-                    ${key}
-                  </span>
-                </span>
-              </div>`
-  }
-
-
-  let isTaskDate = ``;
-  if (task.dueDate) {
-    isTaskDate = `<div class="card__dates">
+  if (Object.keys(task).length !== 0) {
+    let taskColor = `card--${task.color}`;
+    let description = ``;
+    if (task.description && toString(task.description)) {
+      description = task.description;
+    }
+    let isRepDays = ``;
+    if (task.isRepeating && typeof task.isRepeating === `boolean`) {
+      isRepDays = `card--repeat`;
+    }
+    let isTaskDate = ``;
+    if (task.dueDate && toString(task.dueDate)) {
+      isTaskDate = `<div class="card__dates">
               <div class="card__date-deadline">
                 <p class="card__input-deadline-wrap">
                   <span class="card__date">${moment(task.dueDate).format(`D`)} ${moment(task.dueDate).format(`MMMM`)}</span>
@@ -35,9 +19,9 @@ export const createTaskTemplate = (task) => {
                 </p>
               </div>
             </div>`;
-  }
+    }
 
-  return `<article class="card ${taskColor} ${isRepDays}">
+    return `<article class="card ${taskColor} ${isRepDays}">
     <div class="card__form">
       <div class="card__inner">
         <div class="card__control">
@@ -69,10 +53,21 @@ export const createTaskTemplate = (task) => {
           <div class="card__details">
             ${isTaskDate}
             <div class="card__hashtag">
+            <div class="card__hashtag-list">
+              ${Array.from(task.tags).map((tag) => `
+              <span class="card__hashtag-inner">
+                <span class="card__hashtag-name">
+                  #${tag}
+                </span>
+              </span>`).join(``)}
             </div>
+          </div>
           </div>
         </div>
       </div>
     </div>
-  </article>`;
+  </article>`.trim();
+  }
+
+  return false;
 };

@@ -6,7 +6,7 @@ import {createTaskEditTemplate} from '../src/components/task-edit.js';
 import {createLoadMoreButtonTemplate} from '../src/components/load-more-btn.js';
 import {createBoardTemplate} from '../src/components/board.js';
 import {createSortingTemplate} from '../src/components/sorting.js';
-import {task} from  '../src/task.js';
+import {data} from './data.js';
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -26,16 +26,6 @@ const taskListElement = siteMainElement.querySelector(`.board__tasks`);
 render(boardElement, createSortingTemplate(), `afterbegin`);
 render(taskListElement, createTaskEditTemplate(), `beforeend`);
 
-//new Array(3).fill(``).forEach(() => render(taskListElement, createTaskTemplate(), `beforeend`));
+new Array(7).fill(``).forEach(() => render(taskListElement, createTaskTemplate(data), `beforeend`));
 
 render(boardElement, createLoadMoreButtonTemplate(), `beforeend`);
-
-render(taskListElement, createTaskTemplate(task), `beforeend`);
-
-for(let key in task){
-    console.log(task[key]);
-}
-
-for(let key in task.descriptions){
-  console.log(task.descriptions[key]);
-}
