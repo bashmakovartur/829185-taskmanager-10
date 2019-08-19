@@ -6,7 +6,7 @@ import {createTaskEditTemplate} from '../src/components/task-edit.js';
 import {createLoadMoreButtonTemplate} from '../src/components/load-more-btn.js';
 import {createBoardTemplate} from '../src/components/board.js';
 import {createSortingTemplate} from '../src/components/sorting.js';
-import {task} from  '../src/task';
+import {task} from  '../src/task.js';
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
