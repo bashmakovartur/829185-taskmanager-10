@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 export const createTaskTemplate = (task) => {
   if (Object.keys(task).length !== 0) {
     let taskColor = `card--${task.color}`;
