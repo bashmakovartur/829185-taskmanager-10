@@ -10,7 +10,7 @@ export const createTaskTemplate = (task) => {
       isRepDays = `card--repeat`;
     }
     let isTaskDate = ``;
-    if (task.dueDate && toString(task.dueDate)) {
+    if (task.dueDate) {
       isTaskDate = `<div class="card__dates">
               <div class="card__date-deadline">
                 <p class="card__input-deadline-wrap">
@@ -21,7 +21,23 @@ export const createTaskTemplate = (task) => {
             </div>`;
     }
 
-    return `<article class="card ${taskColor} ${isRepDays}">
+    let isOverdue = false;
+    if (moment(task.dueDate).format(`D`) < moment(Date.now()).format(`D`)) {
+      isOverdue = true;
+    }
+    let isToday = false;
+    if (moment(task.dueDate).format(`D`) === moment(Date.now()).format(`D`)) {
+      isToday = true;
+    }
+
+    return `<article class="card ${taskColor} ${isRepDays}"
+        all="true"  
+        overdue="${isOverdue}" 
+        today="${isToday}" 
+        favorites="${task.isFavorite}"
+        repeating="${task.isRepeating}" 
+        archive="${task.isArchive}" 
+        tags="${task.hasTags}">
     <div class="card__form">
       <div class="card__inner">
         <div class="card__control">
@@ -54,12 +70,12 @@ export const createTaskTemplate = (task) => {
             ${isTaskDate}
             <div class="card__hashtag">
             <div class="card__hashtag-list">
-              ${Array.from(task.tags).map((tag) => `
+              ${task.hasTags ? Array.from(task.tags).map((tag) => `
               <span class="card__hashtag-inner">
                 <span class="card__hashtag-name">
                   #${tag}
                 </span>
-              </span>`).join(``)}
+              </span>`).join(``) : ``}
             </div>
           </div>
           </div>

@@ -14,6 +14,7 @@ export const data = {
     Sa: Boolean(Math.round(Math.random())),
     Su: Boolean(Math.round(Math.random())),
   },
+  hasTags: Boolean(Math.round(Math.random())),
   tags: new Set([
     `homework`,
     `theory`,
@@ -32,3 +33,43 @@ export const data = {
   isFavorite: Boolean(Math.round(Math.random())),
   isArchive: Boolean(Math.round(Math.random())),
 };
+
+export const filters = [
+  {
+    id: `all`,
+    class: `filter__all`,
+    isChecked: true,
+    isDisabled: false
+  },
+  {
+    id: `overdue`,
+    class: `filter__overdue`,
+    isChecked: false,
+    isDisabled: true,
+  },
+  {
+    id: `today`,
+    class: `filter__today`,
+    isChecked: false,
+    isDisabled: true,
+  }, {
+    id: `favorites`,
+    class: `filter__favorites`,
+    isChecked: false,
+    isDisabled: false,
+  }, {
+    id: `repeating`,
+    class: `filter__repeating`,
+    isChecked: false,
+    isDisabled: false
+  }, {
+    id: `tags`,
+    class: `filter__tags`,
+    isChecked: false,
+    isDisabled: false
+  }, {
+    id: `archive`,
+    class: `filter__archive`,
+    isChecked: false,
+    isDisabled: false
+  }];
