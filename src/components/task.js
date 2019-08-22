@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 
 export const createTaskTemplate = (task) => {
   if (Object.keys(task).length !== 0) {

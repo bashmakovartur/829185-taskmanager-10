@@ -1,20 +1,22 @@
+import {getRandBool, getRandDate, getRandInt} from '../src/utils';
+
 export const data = {
   descriptions: [`Изучить теорию`, `Сделать домашку`, `Пройти интенсив на соточку`],
   get description() {
-    return this.descriptions[Math.floor(Math.random() * this.descriptions.length)];
+    return this.descriptions[getRandInt(0, (this.descriptions.length - 1))];
   },
-  dueDate: Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000,
-  isRepeating: Boolean(Math.round(Math.random())),
+  dueDate: getRandDate(Date.now()),
+  isRepeating: getRandBool(),
   repeatingDays: {
-    Mo: Boolean(Math.round(Math.random())),
-    Tu: Boolean(Math.round(Math.random())),
-    We: Boolean(Math.round(Math.random())),
-    Th: Boolean(Math.round(Math.random())),
-    Fr: Boolean(Math.round(Math.random())),
-    Sa: Boolean(Math.round(Math.random())),
-    Su: Boolean(Math.round(Math.random())),
+    Mo: getRandBool(),
+    Tu: getRandBool(),
+    We: getRandBool(),
+    Th: getRandBool(),
+    Fr: getRandBool(),
+    Sa: getRandBool(),
+    Su: getRandBool(),
   },
-  hasTags: Boolean(Math.round(Math.random())),
+  hasTags: getRandBool(),
   tags: new Set([
     `homework`,
     `theory`,
@@ -28,10 +30,10 @@ export const data = {
     `pink`
   ],
   get color() {
-    return this.colors[Math.floor(Math.random() * this.colors.length)];
+    return this.colors[getRandInt(0, this.colors.length - 1)];
   },
-  isFavorite: Boolean(Math.round(Math.random())),
-  isArchive: Boolean(Math.round(Math.random())),
+  isFavorite: getRandBool(),
+  isArchive: getRandBool(),
 };
 
 export const filters = [

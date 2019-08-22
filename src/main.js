@@ -30,7 +30,8 @@ const taskListElement = siteMainElement.querySelector(`.board__tasks`);
 render(boardElement, createSortingTemplate(), `afterbegin`);
 render(taskListElement, createTaskEditTemplate(), `beforeend`);
 
-new Array(7).fill(``).forEach(() => render(taskListElement, createTaskTemplate(data), `beforeend`));
+const renderCards = () => new Array(7).fill(``).forEach(() => render(taskListElement, createTaskTemplate(data), `beforeend`));
+renderCards();
 
 const countForFilter = () => {
   const filtersAll = document.querySelectorAll(`.filter__label`);
@@ -54,7 +55,6 @@ const countForFilter = () => {
     }
   }
 };
-
 countForFilter();
 
 render(boardElement, createLoadMoreButtonTemplate(), `beforeend`);
@@ -62,6 +62,6 @@ render(boardElement, createLoadMoreButtonTemplate(), `beforeend`);
 const loadMoreBtn = boardElement.querySelector(`.load-more`);
 
 loadMoreBtn.addEventListener(`click`, function () {
-  new Array(8).fill(``).forEach(() => render(taskListElement, createTaskTemplate(data), `beforeend`));
+  renderCards();
   countForFilter();
 });
