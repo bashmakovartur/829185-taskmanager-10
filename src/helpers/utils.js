@@ -4,11 +4,11 @@
 export const getRandBool = () => Boolean(Math.round(Math.random()));
 
 /*
- * Возвращает случайную дату от выбранной дата в интервале недели.
+ * Возвращает случайную дату от выбранной дата в интервале месяца.
  *
  * @param {string} date дата от которой будет отсчёт
  */
-export const getRandDate = (date) => date + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000;
+export const getRandDate = (date) => date + 1 + Math.floor(Math.random() * 31) * 24 * 60 * 60 * 1000;
 
 /*
  * Возвращает случайное число в интервале между min и max.

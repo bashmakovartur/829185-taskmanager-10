@@ -24,22 +24,25 @@ export const createTaskTemplate = (task) => {
     }
 
     let isOverdue = false;
+    let isOverdueClass = ``;
     if (moment(task.dueDate).format(`D`) < moment(Date.now()).format(`D`)) {
       isOverdue = true;
+      isOverdueClass = `card--deadline`;
     }
     let isToday = false;
     if (moment(task.dueDate).format(`D`) === moment(Date.now()).format(`D`)) {
       isToday = true;
+      isOverdueClass = `card--deadline`;
     }
 
-    return `<article class="card ${taskColor} ${isRepDays}"
-        all="true"  
-        overdue="${isOverdue}" 
-        today="${isToday}" 
-        favorites="${task.isFavorite}"
-        repeating="${task.isRepeating}" 
-        archive="${task.isArchive}" 
-        tags="${task.hasTags}">
+    return `<article class="card ${taskColor} ${isRepDays} ${isOverdueClass}"
+        data-all="true"  
+        data-overdue="${isOverdue}" 
+        data-today="${isToday}" 
+        data-favorites="${task.isFavorite}"
+        data-repeating="${task.isRepeating}" 
+        data-archive="${task.isArchive}" 
+        data-tags="${task.hasTags}">
     <div class="card__form">
       <div class="card__inner">
         <div class="card__control">

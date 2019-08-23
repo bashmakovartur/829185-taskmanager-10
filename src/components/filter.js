@@ -12,8 +12,9 @@ export const createFilters = (filter) => {
       ${isDisabled}
     />
     <label data-name="${name}" for="filter__${name}" class="filter__label" title="${name}">${name} <span class="filter__${name}-count">
-    
-</span></label
+
+</span>
+</label
     >`;
 };
 
