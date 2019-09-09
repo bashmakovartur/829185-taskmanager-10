@@ -10,7 +10,7 @@ import {filters, card} from './data';
 import {render, Position} from "./helpers";
 
 const TASK_COUNT = 8;
-const taskMocks = new Array(TASK_COUNT)
+let taskMocks = new Array(TASK_COUNT)
   .fill(``)
   .map(card);
 
@@ -23,8 +23,10 @@ render(siteHeaderElement, siteMenuTemplate.getElement(), Position.BEFOREEND);
 const searchTemplate = new SearchTemplate();
 render(siteMainElement, searchTemplate.getElement(), Position.BEFOREEND);
 
-const filterTemplate = new Filters(filters, taskMocks);
+
+let filterTemplate = new Filters(filters, taskMocks);
 render(siteMainElement, filterTemplate.getElement(), Position.BEFOREEND);
+const filtersBlock = siteMainElement.querySelector(`.filter`);
 
 const boardTemplate = new BoardTemplate();
 render(siteMainElement, boardTemplate.getElement(), Position.BEFOREEND);
@@ -80,7 +82,14 @@ taskMocks.forEach((taskMock) => renderTask(taskMock));
 
 const showMoreBtn = siteMainElement.querySelector(`.load-more`);
 
-showMoreBtn.addEventListener(`click`, function () {
-  taskMocks.forEach((taskMock) => taskMock.push(card));
+const showMore = () => {
+  taskMocks = taskMocks.concat(taskMocks);
+  taskMocks.forEach((taskMock) => renderTask(taskMock));
+  filtersBlock.remove();
+  filterTemplate = new Filters(filters, taskMocks);
+  siteMainElement.insertBefore(filterTemplate.getElement(), boardElement);
+  showMoreBtn.removeEventListener(`click`, showMore);
   showMoreBtn.remove();
-});
+};
+
+showMoreBtn.addEventListener(`click`, showMore);

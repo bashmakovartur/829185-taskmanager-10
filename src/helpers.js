@@ -25,11 +25,17 @@ export const getRandDate = (start, end) => {
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 };
 
+/* Вспомогательное перечисление
+*/
 export const Position = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
 };
 
+/* Создаёт разметку
+*
+* @param {string} template разметка
+*/
 export const createElement = (template) => {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
@@ -37,6 +43,12 @@ export const createElement = (template) => {
   return newElement.firstChild;
 };
 
+/* Отрисовывает разметку в родительском элементе
+*
+* @param {string} container родительский элемент
+* @param {string} element разметка
+* @param {string} place место отрисовки, AFTERBEGIN - вначале, BEFOREEND - вконце.
+*/
 export const render = (container, element, place) => {
   switch (place) {
     case Position.AFTERBEGIN:
@@ -48,6 +60,10 @@ export const render = (container, element, place) => {
   }
 };
 
+/* Удаляет разметку
+*
+* @param {string} template разметка
+*/
 export const unrender = (element) => {
   if (element) {
     element.remove();
