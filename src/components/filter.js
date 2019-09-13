@@ -1,10 +1,10 @@
-import {createElement} from "../helpers";
+import {AbstractComponent} from "../data";
 
-export class Filters {
+export class Filters extends AbstractComponent{
   constructor(filters, taskMocks) {
+    super();
     this._filters = filters;
     this._arr = taskMocks;
-    this._element = null;
   }
 
   getTemplate() {
@@ -21,13 +21,5 @@ export class Filters {
       ${filter.title} <span class="filter__${filter.title}-count">${filter.count(this._arr)}</span></label
     >`)).join(``)}
   </section>`;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 }

@@ -1,17 +1,6 @@
-import {createElement} from "../helpers";
+import {AbstractComponent} from "../data";
 
-export class SortingTemplate {
-  constructor() {
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
+export class SortingTemplate extends AbstractComponent{
 
   getTemplate() {
     return `<div class="board__filter-list">

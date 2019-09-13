@@ -93,3 +93,12 @@ const showMore = () => {
 };
 
 showMoreBtn.addEventListener(`click`, showMore);
+
+class BoardController {
+  constructor() {
+  }
+
+  init() {
+
+  }
+}
