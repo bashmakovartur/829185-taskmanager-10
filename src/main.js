@@ -7,7 +7,7 @@ import {LoadMoreButtonTemplate} from '../src/components/load-more-btn.js';
 import {BoardTemplate} from '../src/components/board.js';
 import {SortingTemplate} from '../src/components/sorting.js';
 import {filters, card} from './data';
-import {render, Position} from "./helpers";
+import {render, Position} from './helpers';
 
 const TASK_COUNT = 8;
 let taskMocks = new Array(TASK_COUNT)
