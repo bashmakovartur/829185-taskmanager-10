@@ -1,10 +1,7 @@
-import {AbstractComponent} from "../data";
+import {AbstractClass} from "../data";
 
-export class BoardTemplate extends AbstractComponent{
-
+export class BoardTemplate extends AbstractClass {
   getTemplate() {
-    return `<section class="board container">
-    <div class="board__tasks"></div>
-  </section>`;
+    return `<section class="board container"></section>`;
   }
 }

@@ -1,6 +1,7 @@
-import {AbstractComponent} from "../data";
+import {createElement} from "../helpers";
+import {AbstractClass} from "../data";
 
-export class SiteMenuTemplate extends AbstractComponent{
+export class SiteMenuTemplate extends AbstractClass {
 
   getTemplate() {
     return `<section class="control__btn-wrap">

@@ -1,6 +1,6 @@
-import {AbstractComponent} from "../data";
+import {AbstractClass} from "../data";
 
-export class Task extends AbstractComponent{
+export class Task extends AbstractClass {
   constructor({description, dueDate, tags, color, isRepeating, isArchive, isFavorite}) {
     super();
     this._description = description;

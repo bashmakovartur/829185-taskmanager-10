@@ -1,6 +1,6 @@
-import {AbstractComponent} from "../data";
+import {AbstractClass} from "../data";
 
-export class SearchTemplate extends AbstractComponent{
+export class SearchTemplate extends AbstractClass {
 
   getTemplate() {
     return `<section class="main__search search container">

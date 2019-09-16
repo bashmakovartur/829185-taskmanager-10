@@ -131,16 +131,9 @@ export const filters = [
   }
 ];
 
-export class AbstractComponent {
-  constructor(element) {
+export class AbstractClass {
+  constructor() {
     this._element = null;
-    if (new.target === AbstractComponent) {
-      throw new Error(`Can't instantiate AbstractComponent, only concrete one.`);
-    }
-  }
-
-  getTemplate() {
-    throw new Error(`Abstract method not implemented: getTemplate`);
   }
 
   getElement() {
@@ -155,5 +148,9 @@ export class AbstractComponent {
     if (this._element) {
       this._element = null;
     }
+  }
+
+  getTemplate() {
+    throw Error(`This method can not be realised`);
   }
 }

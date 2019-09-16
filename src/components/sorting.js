@@ -1,6 +1,6 @@
-import {AbstractComponent} from "../data";
+import {AbstractClass} from "../data";
 
-export class SortingTemplate extends AbstractComponent{
+export class SortingTemplate extends AbstractClass {
 
   getTemplate() {
     return `<div class="board__filter-list">

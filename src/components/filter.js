@@ -1,6 +1,6 @@
-import {AbstractComponent} from "../data";
+import {AbstractClass} from "../data";
 
-export class Filters extends AbstractComponent{
+export class Filters extends AbstractClass {
   constructor(filters, taskMocks) {
     super();
     this._filters = filters;
