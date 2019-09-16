@@ -1,21 +1,7 @@
-import {createElement} from "../helpers";
+import {AbstractClass} from "../data";
 
-export class BoardTemplate {
-  constructor() {
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
+export class BoardTemplate extends AbstractClass {
   getTemplate() {
-    return `<section class="board container">
-    <div class="board__tasks"></div>
-  </section>`;
+    return `<section class="board container"></section>`;
   }
 }

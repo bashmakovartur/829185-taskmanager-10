@@ -1,4 +1,4 @@
-import {getRandDate, getRandIntBetween, getRandBool} from "./helpers";
+import {getRandDate, getRandIntBetween, getRandBool, createElement} from "./helpers";
 
 export const card = () => ({
   description: [`Изучить теорию`, `Сделать домашку`, `Пройти интенсив на соточку`][getRandIntBetween(0, 2)],
@@ -130,3 +130,27 @@ export const filters = [
     }
   }
 ];
+
+export class AbstractClass {
+  constructor() {
+    this._element = null;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    if (this._element) {
+      this._element = null;
+    }
+  }
+
+  getTemplate() {
+    throw Error(`This method can not be realised`);
+  }
+}

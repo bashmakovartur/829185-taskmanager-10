@@ -1,17 +1,6 @@
-import {createElement} from "../helpers";
+import {AbstractClass} from "../data";
 
-export class SearchTemplate {
-  constructor() {
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
+export class SearchTemplate extends AbstractClass {
 
   getTemplate() {
     return `<section class="main__search search container">
