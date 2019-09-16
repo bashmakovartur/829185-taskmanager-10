@@ -1,4 +1,3 @@
-import {createElement} from "../helpers";
 import {AbstractClass} from "../data";
 
 export class SiteMenuTemplate extends AbstractClass {

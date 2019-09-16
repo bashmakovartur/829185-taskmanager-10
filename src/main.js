@@ -2,8 +2,6 @@ import {SiteMenuTemplate} from '../src/components/site-menu.js';
 import {SearchTemplate} from '../src/components/search.js';
 import {Filters} from '../src/components/filter.js';
 import {LoadMoreButtonTemplate} from '../src/components/load-more-btn.js';
-import {BoardTemplate} from '../src/components/board.js';
-import {SortingTemplate} from '../src/components/sorting.js';
 import {filters, card} from './data';
 import {render, Position} from './helpers';
 import {BoardController} from "./controllers/BoardController";
@@ -27,29 +25,23 @@ let filterTemplate = new Filters(filters, taskMocks);
 render(siteMainElement, filterTemplate.getElement(), Position.BEFOREEND);
 const filtersBlock = siteMainElement.querySelector(`.filter`);
 
+const boardController = new BoardController(siteMainElement, taskMocks);
+boardController.init();
 
 const boardElement = siteMainElement.querySelector(`.board`);
-const tasksContainer = siteMainElement.querySelector(`.board__tasks`);
-
-// const sortingTemplate = new SortingTemplate();
-// render(boardElement, sortingTemplate.getElement(), Position.AFTERBEGIN);
-
-// const loadMoreButtonTemplate = new LoadMoreButtonTemplate();
-// render(boardElement, loadMoreButtonTemplate.getElement(), Position.BEFOREEND);
-
-const boardController = new BoardController(tasksContainer, taskMocks);
-boardController.init();
+const loadMoreButtonTemplate = new LoadMoreButtonTemplate();
+render(boardElement, loadMoreButtonTemplate.getElement(), Position.BEFOREEND);
 
 const showMoreBtn = siteMainElement.querySelector(`.load-more`);
 
-// const showMore = () => {
-//   taskMocks = taskMocks.concat(taskMocks);
-//   taskMocks.forEach((taskMock) => renderTask(taskMock));
-//   filtersBlock.remove();
-//   filterTemplate = new Filters(filters, taskMocks);
-//   siteMainElement.insertBefore(filterTemplate.getElement(), boardElement);
-//   showMoreBtn.removeEventListener(`click`, showMore);
-//   showMoreBtn.remove();
-// };
-//
-// showMoreBtn.addEventListener(`click`, showMore);
+const showMore = () => {
+  taskMocks = taskMocks.slice().push(taskMocks);
+  boardController.init();
+  filtersBlock.remove();
+  filterTemplate = new Filters(filters, taskMocks);
+  siteMainElement.insertBefore(filterTemplate.getElement(), boardElement);
+  showMoreBtn.removeEventListener(`click`, showMore);
+  showMoreBtn.remove();
+};
+
+showMoreBtn.addEventListener(`click`, showMore);
