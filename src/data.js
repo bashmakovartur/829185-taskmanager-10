@@ -2,23 +2,23 @@ import {getRandDate, getRandIntBetween, getRandBool, createElement} from "./help
 
 export const card = () => ({
   description: [`Изучить теорию`, `Сделать домашку`, `Пройти интенсив на соточку`][getRandIntBetween(0, 2)],
-  dueDate: getRandDate(new Date(2019, 7), new Date(2019, 8, 31)),
+  dueDate: getRandDate(new Date(2019, 8), new Date(2019, 9, 31)),
   repeatingDays: {
-    Mo: getRandBool(),
-    Tu: getRandBool(),
-    We: getRandBool(),
-    Th: getRandBool(),
-    Fr: getRandBool(),
-    Sa: getRandBool(),
-    Su: getRandBool(),
+    mo: false,
+    tu: false,
+    we: false,
+    th: false,
+    fr: false,
+    sa: false,
+    su: false,
   },
   isRepeating: getRandBool(),
-  tags: [
+  tags: new Set([
     `catfishing`,
     `assscratch`,
     `bitchiing`,
     `revolution`,
-  ],
+  ]),
   color: [
     `black`,
     `yellow`,
@@ -151,6 +151,6 @@ export class AbstractClass {
   }
 
   getTemplate() {
-    throw Error(`This method can not be realised`);
+    throw Error(`Abstract method not implemented: getTemplate`);
   }
 }

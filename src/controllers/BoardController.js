@@ -1,5 +1,5 @@
 import {BoardTemplate} from "../components/board";
-import {Position, render} from "../helpers";
+import {Position, render, unrender} from "../helpers";
 import {Task} from "../components/task";
 import {TaskEdit} from "../components/task-edit";
 import {TasksListTemplate} from "../components/task-list";
@@ -10,8 +10,8 @@ export class BoardController {
     this._container = container;
     this._tasks = tasks;
     this._board = new BoardTemplate();
-    this._tasksList = new TasksListTemplate();
     this._sort = new SortingTemplate();
+    this._tasksList = new TasksListTemplate();
   }
 
   init() {
@@ -20,8 +20,17 @@ export class BoardController {
     render(this._board.getElement(), this._tasksList.getElement(), Position.BEFOREEND);
 
     this._tasks.forEach((taskMocks) => this._renderTask(taskMocks));
+
     this._sort.getElement()
       .addEventListener(`click`, (evt) => this._onSortLinkClick(evt));
+  }
+
+  _renderBoard() {
+    unrender(this._tasksList.getElement());
+
+    this._tasksList.removeElement();
+    render(this._board.getElement(), this._tasksList.getElement(), Position.BEFOREEND);
+    this._tasks.forEach((taskMock) => this._renderTask(taskMock));
   }
 
   _renderTask(taskMock) {
@@ -54,10 +63,36 @@ export class BoardController {
 
     taskEditComponent.getElement()
       .querySelector(`.card__save`)
-      .addEventListener(`click`, () => {
-        this._tasksList.getElement().replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
+      .addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+
+        const formData = new FormData(taskEditComponent.getElement().querySelector(`.card__form`));
+        const entry = {
+          description: formData.get(`text`),
+          color: formData.get(`color`),
+          tags: new Set(formData.getAll(`hashtag`)),
+          dueDate: new Date(formData.get(`date`)),
+          isRepeating: false,
+          repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
+            acc[it] = true;
+            return acc;
+          }, {
+            mo: false,
+            tu: false,
+            we: false,
+            th: false,
+            fr: false,
+            sa: false,
+            su: false,
+          })
+        };
+
+        this._tasks[this._tasks.findIndex((it) => it === taskMock)] = entry;
+        this._renderBoard(this._tasks);
+
         document.removeEventListener(`keydown`, onEscKeyDown);
       });
+
 
     render(this._tasksList.getElement(), taskComponent.getElement(), Position.BEFOREEND);
   }

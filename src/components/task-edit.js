@@ -1,13 +1,15 @@
 import {AbstractClass} from "../data";
+import moment from 'moment';
 
 export class TaskEdit extends AbstractClass {
-  constructor({description, dueDate, tags, color, isRepeating}) {
+  constructor({description, dueDate, tags, color, isRepeating, repeatingDays}) {
     super();
     this._description = description;
     this._dueDate = new Date(dueDate);
     this._tags = tags;
     this._color = color;
     this._isRepeating = isRepeating;
+    this._repeatingDays = repeatingDays;
   }
 
   getTemplate() {
@@ -45,12 +47,42 @@ export class TaskEdit extends AbstractClass {
         <div class="card__settings">
           <div class="card__details">
             <div class="card__dates">
-                      <div class="card__date-deadline">
-                        <p class="card__input-deadline-wrap">
-                          <span class="card__date">${this._dueDate.toDateString()}</span>
-                          <span class="card__time">${this._dueDate.getHours()}:${this._dueDate.getMinutes()}</span>
-                        </p>
-                      </div>
+             <button class="card__date-deadline-toggle" type="button">
+                        date: <span class="card__date-status">yes</span>
+                      </button>
+                      
+                      <fieldset class="card__date-deadline">
+                        <label class="card__input-deadline-wrap">
+                          <input
+                            class="card__date"
+                            type="text"
+                            placeholder=""
+                            name="date"
+                            value="${moment(this._dueDate).format(`dd MMM DD YYYY`)}"
+                          />
+                        </label>
+                      </fieldset>
+                      
+                        <button class="card__repeat-toggle" type="button">
+                        repeat:<span class="card__repeat-status">${this._isRepeating ? `yes` : `no`}</span>
+                      </button>
+
+                      <fieldset class="card__repeat-days">
+                        <div class="card__repeat-days-inner">
+                        ${Object.keys(this._repeatingDays).map((day) => (`
+                        <input
+                            class="visually-hidden card__repeat-day-input"
+                            type="checkbox"
+                            id="repeat-${day}-4"
+                            name="repeat"
+                            value="${day}"
+                            ${this._repeatingDays[day] ? `checked` : ``}
+                          />
+                          <label class="card__repeat-day" for="repeat-${day}-4"
+                            >${day}</label
+                          >`)).join(``)}
+                        </div>
+                      </fieldset>
                     </div>
 
             <div class="card__hashtag">
