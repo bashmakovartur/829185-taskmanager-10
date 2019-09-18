@@ -2,20 +2,20 @@ import {AbstractClass} from "../data";
 import moment from "moment";
 
 export class Task extends AbstractClass {
-  constructor({description, dueDate, tags, color, isRepeating, repeatingDays, isArchive, isFavorite}) {
+  constructor({description, dueDate, tags, color, repeatingDays}) {
     super();
     this._description = description;
     this._dueDate = new Date(dueDate);
     this._tags = tags;
     this._color = color;
-    this._isRepeating = isRepeating;
     this._repeatingDays = repeatingDays;
-    this._isArchive = isArchive;
-    this._isFavorite = isFavorite;
   }
 
   getTemplate() {
-    return `<article class="card card--${this._color} ${this._isRepeating ? `card--repeat` : ``}${this._dueDate < new Date() ? `card card--deadline` : ``}">
+    return `<article class="card card--${this._color} 
+    ${Object.values(this._repeatingDays).some((it) => it) ? `card--repeat` : ``}
+    ${this._dueDate < new Date() ? `card card--deadline` : ``} 
+    ${Object.values(this._repeatingDays).some((it) => it) ? `card--repeat` : ``}">
             <div class="card__form">
               <div class="card__inner">
                 <div class="card__control">

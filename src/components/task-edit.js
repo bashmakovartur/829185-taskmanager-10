@@ -2,18 +2,20 @@ import {AbstractClass} from "../data";
 import moment from 'moment';
 
 export class TaskEdit extends AbstractClass {
-  constructor({description, dueDate, tags, color, isRepeating, repeatingDays}) {
+  constructor({description, dueDate, tags, color, repeatingDays}) {
     super();
     this._description = description;
     this._dueDate = new Date(dueDate);
     this._tags = tags;
     this._color = color;
-    this._isRepeating = isRepeating;
     this._repeatingDays = repeatingDays;
+
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return `<article class="card card--edit card--${this._color} ${this._isRepeating ? `card--repeat` : ``}">
+    return `<article class="card card--edit card--${this._color} 
+            ${Object.values(this._repeatingDays).some((it) => it) ? `card--repeat` : ``}">
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
@@ -64,7 +66,7 @@ export class TaskEdit extends AbstractClass {
                       </fieldset>
                       
                         <button class="card__repeat-toggle" type="button">
-                        repeat:<span class="card__repeat-status">${this._isRepeating ? `yes` : `no`}</span>
+                        repeat:<span class="card__repeat-status">${Object.values(this._repeatingDays).some((it) => it) ? `yes` : `no`}</span>
                       </button>
 
                       <fieldset class="card__repeat-days">
@@ -181,5 +183,90 @@ export class TaskEdit extends AbstractClass {
       </div>
     </form>
   </article>`;
+  }
+
+  _subscribeOnEvents() {
+    this.getElement()
+      .querySelector(`.card__hashtag-input`).addEventListener(`keydown`, (evt) => {
+        if (evt.key === `Enter`) {
+          evt.preventDefault();
+          this.getElement().querySelector(`.card__hashtag-list`).insertAdjacentHTML(`beforeend`, `<span class="card__hashtag-inner">
+            <input
+              type="hidden"
+              name="hashtag"
+              value="${evt.target.value}"
+              class="card__hashtag-hidden-input"
+            />
+            <p class="card__hashtag-name">
+              #${evt.target.value}
+            </p>
+            <button type="button" class="card__hashtag-delete">
+              delete
+            </button>
+          </span>`);
+          evt.target.value = ``;
+        }
+
+        this.getElement()
+          .querySelectorAll(`.card__hashtag-delete`)
+          .forEach((btn) => btn.addEventListener(`click`, (e) => {
+            e.target.closest(`.card__hashtag-inner`).remove();
+          }));
+      });
+
+    this.getElement()
+      .querySelectorAll(`.card__hashtag-delete`)
+      .forEach((btn) => btn.addEventListener(`click`, (evt) => {
+        evt.target.closest(`.card__hashtag-inner`).remove();
+      }));
+
+    this.getElement()
+      .querySelector(`.card__date-deadline-toggle`)
+      .addEventListener(`click`, (evt) => {
+        const btn = evt.currentTarget;
+        evt.preventDefault();
+        switch (btn.querySelector(`.card__date-status`).innerHTML) {
+          case `yes`:
+            btn.querySelector(`.card__date-status`).innerHTML = `no`;
+            btn.nextElementSibling.querySelector(`.form-control`).value = ``;
+            btn.nextElementSibling.style.display = `none`;
+            break;
+          case `no`:
+            btn.querySelector(`.card__date-status`).innerHTML = `yes`;
+            btn.nextElementSibling.style.display = `block`;
+            break;
+        }
+      });
+
+    this.getElement()
+      .querySelector(`.card__repeat-toggle`)
+      .addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        this.getElement().querySelectorAll(`.card__repeat-day-input`).forEach((item) => item.removeAttribute(`checked`));
+        switch (this.getElement().querySelector(`.card__repeat-status`).innerHTML) {
+          case `yes`:
+            this.getElement().querySelector(`.card__repeat-status`).innerHTML = `no`;
+            this.getElement().querySelector(`.card__repeat-days`).style.display = `none`;
+            break;
+          case `no`:
+            this.getElement().querySelector(`.card__repeat-status`).innerHTML = `yes`;
+            this.getElement().querySelector(`.card__repeat-days`).style.display = `block`;
+            break;
+        }
+      });
+
+    this.getElement().querySelectorAll(`.card__color`).forEach((item) => {
+      item.addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        this.getElement().querySelectorAll(`.card__color`).forEach((i) => {
+          evt.currentTarget.closest(`.card`).classList.remove(`card--` + i.previousElementSibling.value);
+        });
+
+        const color = evt.currentTarget.previousElementSibling.value;
+        evt.currentTarget.closest(`.card`).classList.add(`card--` + color);
+        this.getElement().querySelectorAll(`.card__color-input`).forEach((j) => j.removeAttribute(`checked`));
+        evt.currentTarget.previousElementSibling.setAttribute(`checked`, `checked`);
+      });
+    });
   }
 }

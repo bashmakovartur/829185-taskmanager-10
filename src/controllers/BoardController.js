@@ -1,9 +1,9 @@
 import {BoardTemplate} from "../components/board";
 import {Position, render, unrender} from "../helpers";
-import {Task} from "../components/task";
-import {TaskEdit} from "../components/task-edit";
+import {TaskController} from "../controllers/TaskController";
 import {TasksListTemplate} from "../components/task-list";
 import {SortingTemplate} from "../components/sorting";
+import {LoadMoreButtonTemplate} from '../components/load-more-btn';
 
 export class BoardController {
   constructor(container, tasks) {
@@ -12,6 +12,11 @@ export class BoardController {
     this._board = new BoardTemplate();
     this._sort = new SortingTemplate();
     this._tasksList = new TasksListTemplate();
+    this._loadMore = new LoadMoreButtonTemplate();
+
+    this._subscriptions = [];
+    this._onChangeView = this._onChangeView.bind(this);
+    this._onDataChange = this._onDataChange.bind(this);
   }
 
   init() {
@@ -21,80 +26,37 @@ export class BoardController {
 
     this._tasks.forEach((taskMocks) => this._renderTask(taskMocks));
 
+    render(this._board.getElement(), this._loadMore.getElement(), Position.BEFOREEND);
+
+
     this._sort.getElement()
       .addEventListener(`click`, (evt) => this._onSortLinkClick(evt));
   }
 
   _renderBoard() {
     unrender(this._tasksList.getElement());
+    unrender(this._loadMore.getElement());
 
     this._tasksList.removeElement();
+    this._loadMore.removeElement();
     render(this._board.getElement(), this._tasksList.getElement(), Position.BEFOREEND);
+    render(this._board.getElement(), this._loadMore.getElement(), Position.BEFOREEND);
     this._tasks.forEach((taskMock) => this._renderTask(taskMock));
   }
 
-  _renderTask(taskMock) {
-    const taskComponent = new Task(taskMock);
-    const taskEditComponent = new TaskEdit(taskMock);
+  _renderTask(task) {
+    const taskController = new TaskController(this._tasksList, task, this._onDataChange, this._onChangeView);
+    this._subscriptions.push(taskController.setDefaultView.bind(taskController));
+  }
 
-    const onEscKeyDown = (evt) => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
-        this._tasksList.getElement().replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
+  _onChangeView() {
+    this._subscriptions.forEach((it) => it());
+  }
 
-    taskComponent.getElement()
-      .querySelector(`.card__btn--edit`)
-      .addEventListener(`click`, () => {
-        this._tasksList.getElement().replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
-        document.addEventListener(`keydown`, onEscKeyDown);
-      });
+  _onDataChange(newData, oldData) {
+    this._tasks[this._tasks.findIndex((it) => it === oldData)] = newData;
 
-    taskEditComponent.getElement().querySelector(`textarea`)
-      .addEventListener(`focus`, () => {
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      });
-
-    taskEditComponent.getElement().querySelector(`textarea`)
-      .addEventListener(`blur`, () => {
-        document.addEventListener(`keydown`, onEscKeyDown);
-      });
-
-    taskEditComponent.getElement()
-      .querySelector(`.card__save`)
-      .addEventListener(`click`, (evt) => {
-        evt.preventDefault();
-
-        const formData = new FormData(taskEditComponent.getElement().querySelector(`.card__form`));
-        const entry = {
-          description: formData.get(`text`),
-          color: formData.get(`color`),
-          tags: new Set(formData.getAll(`hashtag`)),
-          dueDate: new Date(formData.get(`date`)),
-          isRepeating: false,
-          repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
-            acc[it] = true;
-            return acc;
-          }, {
-            mo: false,
-            tu: false,
-            we: false,
-            th: false,
-            fr: false,
-            sa: false,
-            su: false,
-          })
-        };
-
-        this._tasks[this._tasks.findIndex((it) => it === taskMock)] = entry;
-        this._renderBoard(this._tasks);
-
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      });
-
-
-    render(this._tasksList.getElement(), taskComponent.getElement(), Position.BEFOREEND);
+    this._renderBoard(this._tasks);
   }
 
   _onSortLinkClick(evt) {

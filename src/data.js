@@ -6,13 +6,12 @@ export const card = () => ({
   repeatingDays: {
     mo: false,
     tu: false,
-    we: false,
+    we: getRandBool(),
     th: false,
     fr: false,
     sa: false,
     su: false,
   },
-  isRepeating: getRandBool(),
   tags: new Set([
     `catfishing`,
     `assscratch`,
@@ -62,11 +61,10 @@ const countFilters = (title, arr) => {
 
   if (title === `repeating`) {
     for (let key of arr) {
-      if (key.isRepeating) {
-        count++;
-      }
+      Object.values(key.repeatingDays).some(it => it) ? count++ : ``;
     }
   }
+
   if (title === `tags`) {
     for (let key of arr) {
       if (key.tags) {
@@ -84,8 +82,8 @@ const countFilters = (title, arr) => {
   }
 
   return count;
-
 };
+
 export const filters = [
   {
     title: `all`,
@@ -132,6 +130,7 @@ export const filters = [
 ];
 
 export class AbstractClass {
+
   constructor() {
     this._element = null;
   }

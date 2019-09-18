@@ -28,10 +28,6 @@ const filtersBlock = siteMainElement.querySelector(`.filter`);
 const boardController = new BoardController(siteMainElement, taskMocks);
 boardController.init();
 
-const boardElement = siteMainElement.querySelector(`.board`);
-const loadMoreButtonTemplate = new LoadMoreButtonTemplate();
-render(boardElement, loadMoreButtonTemplate.getElement(), Position.BEFOREEND);
-
 const showMoreBtn = siteMainElement.querySelector(`.load-more`);
 
 const showMore = () => {
