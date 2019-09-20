@@ -19,12 +19,12 @@ export class TaskEdit extends AbstractClass {
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
-          <button type="button" class="card__btn card__btn--archive">
+          <button type="button" class="card__btn card__btn--archive ${this._isArchive ? `` : `card__btn--disabled`}">
             archive
           </button>
           <button
             type="button"
-            class="card__btn card__btn--favorites card__btn--disabled"
+            class="card__btn card__btn--favorites ${this._isFavorite ? `` : `card__btn--disabled`}"
           >
             favorites
           </button>
@@ -68,8 +68,7 @@ export class TaskEdit extends AbstractClass {
                         <button class="card__repeat-toggle" type="button">
                         repeat:<span class="card__repeat-status">${Object.values(this._repeatingDays).some((it) => it) ? `yes` : `no`}</span>
                       </button>
-
-                      <fieldset class="card__repeat-days">
+                      <fieldset class="card__repeat-days" style="display: ${Object.values(this._repeatingDays).some((it) => it) ? `block` : `none`}">
                         <div class="card__repeat-days-inner">
                         ${Object.keys(this._repeatingDays).map((day) => (`
                         <input
@@ -117,6 +116,7 @@ export class TaskEdit extends AbstractClass {
                 class="card__color-input card__color-input--black visually-hidden"
                 name="color"
                 value="black"
+                ${this._color === `black` ? `checked` : ``}
               />
               <label
                 for="color-black-4"
@@ -129,7 +129,7 @@ export class TaskEdit extends AbstractClass {
                 class="card__color-input card__color-input--yellow visually-hidden"
                 name="color"
                 value="yellow"
-                checked
+                ${this._color === `yellow` ? `checked` : ``}
               />
               <label
                 for="color-yellow-4"
@@ -142,6 +142,7 @@ export class TaskEdit extends AbstractClass {
                 class="card__color-input card__color-input--blue visually-hidden"
                 name="color"
                 value="blue"
+                ${this._color === `blue` ? `checked` : ``}
               />
               <label
                 for="color-blue-4"
@@ -154,6 +155,7 @@ export class TaskEdit extends AbstractClass {
                 class="card__color-input card__color-input--green visually-hidden"
                 name="color"
                 value="green"
+                ${this._color === `green` ? `checked` : ``}
               />
               <label
                 for="color-green-4"
@@ -166,6 +168,7 @@ export class TaskEdit extends AbstractClass {
                 class="card__color-input card__color-input--pink visually-hidden"
                 name="color"
                 value="pink"
+                ${this._color === `pink` ? `checked` : ``}
               />
               <label
                 for="color-pink-4"
@@ -188,9 +191,9 @@ export class TaskEdit extends AbstractClass {
   _subscribeOnEvents() {
     this.getElement()
       .querySelector(`.card__hashtag-input`).addEventListener(`keydown`, (evt) => {
-        if (evt.key === `Enter`) {
-          evt.preventDefault();
-          this.getElement().querySelector(`.card__hashtag-list`).insertAdjacentHTML(`beforeend`, `<span class="card__hashtag-inner">
+      if (evt.key === `Enter`) {
+        evt.preventDefault();
+        this.getElement().querySelector(`.card__hashtag-list`).insertAdjacentHTML(`beforeend`, `<span class="card__hashtag-inner">
             <input
               type="hidden"
               name="hashtag"
@@ -204,15 +207,15 @@ export class TaskEdit extends AbstractClass {
               delete
             </button>
           </span>`);
-          evt.target.value = ``;
-        }
+        evt.target.value = ``;
+      }
 
-        this.getElement()
-          .querySelectorAll(`.card__hashtag-delete`)
-          .forEach((btn) => btn.addEventListener(`click`, (e) => {
-            e.target.closest(`.card__hashtag-inner`).remove();
-          }));
-      });
+      this.getElement()
+        .querySelectorAll(`.card__hashtag-delete`)
+        .forEach((btn) => btn.addEventListener(`click`, (e) => {
+          e.target.closest(`.card__hashtag-inner`).remove();
+        }));
+    });
 
     this.getElement()
       .querySelectorAll(`.card__hashtag-delete`)
@@ -242,20 +245,33 @@ export class TaskEdit extends AbstractClass {
       .querySelector(`.card__repeat-toggle`)
       .addEventListener(`click`, (evt) => {
         evt.preventDefault();
-        this.getElement().querySelectorAll(`.card__repeat-day-input`).forEach((item) => item.removeAttribute(`checked`));
         switch (this.getElement().querySelector(`.card__repeat-status`).innerHTML) {
           case `yes`:
             this.getElement().querySelector(`.card__repeat-status`).innerHTML = `no`;
             this.getElement().querySelector(`.card__repeat-days`).style.display = `none`;
+            evt.currentTarget.closest(`.card`).classList.remove(`card--repeat`);
             break;
           case `no`:
             this.getElement().querySelector(`.card__repeat-status`).innerHTML = `yes`;
             this.getElement().querySelector(`.card__repeat-days`).style.display = `block`;
+            evt.currentTarget.closest(`.card`).classList.add(`card--repeat`);
             break;
         }
       });
 
-    this.getElement().querySelectorAll(`.card__color`).forEach((item) => {
+    this.getElement()
+      .querySelectorAll(`.card__repeat-day`)
+      .forEach((item) => item.addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        if(evt.target.previousElementSibling.checked) {
+          evt.target.previousElementSibling.checked = false;
+        } else {
+          evt.target.previousElementSibling.checked = true;
+        }
+      }));
+
+    this.getElement()
+      .querySelectorAll(`.card__color`).forEach((item) => {
       item.addEventListener(`click`, (evt) => {
         evt.preventDefault();
         this.getElement().querySelectorAll(`.card__color`).forEach((i) => {
@@ -268,5 +284,17 @@ export class TaskEdit extends AbstractClass {
         evt.currentTarget.previousElementSibling.setAttribute(`checked`, `checked`);
       });
     });
+
+    this.getElement()
+      .querySelectorAll(`.card__btn`)
+      .forEach((item) => item
+        .addEventListener(`click`, (evt) => {
+          evt.preventDefault();
+          if (!evt.target.classList.contains(`card__btn--disabled`)) {
+            evt.target.classList.add(`card__btn--disabled`)
+          } else {
+            evt.target.classList.remove(`card__btn--disabled`)
+          }
+        }));
   }
 }

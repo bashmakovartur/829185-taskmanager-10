@@ -72,6 +72,8 @@ export class TaskController {
           tags: new Set(formData.getAll(`hashtag`)),
           dueDate: new Date(formData.get(`date`)),
           isRepeating: false,
+          isArchive: false,
+          isFavorite: false,
           repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
             acc[it] = true;
             return acc;
