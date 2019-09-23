@@ -3,7 +3,7 @@ import {MainController} from "./controllers/MainController";
 import {SiteMenuTemplate} from "./components/site-menu";
 import {render, Position} from './helpers';
 
-const TASK_COUNT = 8;
+const TASK_COUNT = 16;
 let taskMocks = new Array(TASK_COUNT)
   .fill(``)
   .map(card);
@@ -14,4 +14,5 @@ const siteMenu = new SiteMenuTemplate();
 render(siteControl, siteMenu.getElement(), Position.BEFOREEND);
 
 const mainController = new MainController(siteMainElement, filters, taskMocks);
+
 mainController.init();

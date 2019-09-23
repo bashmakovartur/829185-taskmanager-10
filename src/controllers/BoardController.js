@@ -6,39 +6,42 @@ import {SortingTemplate} from "../components/sorting";
 import {LoadMoreButtonTemplate} from '../components/load-more-btn';
 
 export class BoardController {
-  constructor(container, tasks) {
+  constructor(container, tasks, onNumberTasksChange) {
     this._container = container;
     this._tasks = tasks;
     this._board = new BoardTemplate();
     this._sort = new SortingTemplate();
     this._tasksList = new TasksListTemplate();
     this._loadMore = new LoadMoreButtonTemplate();
+    this._onNumberTasksChange = onNumberTasksChange;
 
     this._subscriptions = [];
     this._onChangeView = this._onChangeView.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
   }
 
-  init() {
+  renderBoard() {
+    this._unRenderBoard();
+
     render(this._container, this._board.getElement(), Position.BEFOREEND);
     render(this._board.getElement(), this._tasksList.getElement(), Position.AFTERBEGIN);
 
-    this._tasks.forEach((taskMocks) => this._renderTask(taskMocks));
-    this._renderLoadMoreBtn();
-    this._renderSortFilters();
-  }
-
-  _renderBoard() {
-    unrender(this._tasksList.getElement());
-    unrender(this._loadMore.getElement());
-    this._tasksList.removeElement();
-    this._loadMore.removeElement();
-
-
-    render(this._board.getElement(), this._tasksList.getElement(), Position.BEFOREEND);
     this._tasks.forEach((taskMock) => this._renderTask(taskMock));
 
+    this._renderSortFilters();
     this._renderLoadMoreBtn();
+  }
+
+  _unRenderBoard() {
+    unrender(this._board.getElement());
+    unrender(this._sort.getElement());
+    unrender(this._tasksList.getElement());
+    unrender(this._loadMore.getElement());
+
+    this._board.removeElement();
+    this._sort.removeElement();
+    this._tasksList.removeElement();
+    this._loadMore.removeElement();
   }
 
   _renderTask(task) {
@@ -66,27 +69,12 @@ export class BoardController {
   _onDataChange(newData, oldData) {
     this._tasks[this._tasks.findIndex((it) => it === oldData)] = newData;
 
-    this._renderBoard(this._tasks);
+    this.renderBoard(this._tasks);
   }
 
   _onLoadMoreClick(evt) {
     evt.preventDefault();
-    console.log(this._tasks);
-
-    const arrLength = this._tasks.length;
-    for(let i = 0; i <= arrLength - 1; i++){
-      this._tasks.push(this._tasks[i]);
-    }
-
-    unrender(this._tasksList.getElement());
-    this._tasksList.removeElement();
-
-    render(this._board.getElement(), this._tasksList.getElement(), Position.BEFOREEND);
-    this._tasks.forEach((taskMock) => this._renderTask(taskMock));
-
-
-    unrender(this._loadMore.getElement());
-    this._loadMore.removeElement();
+    this._onNumberTasksChange();
   }
 
   _onSortLinkClick(evt) {
