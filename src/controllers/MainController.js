@@ -16,8 +16,6 @@ export class MainController {
   _filterTaskMock() {
     if (this._taskMock.length > 8) {
       this._taskMockSliced = this._taskMock.slice(0, 8);
-      console.log(this._taskMockSliced);
-      console.log(this._taskMock);
     }
   }
 
@@ -36,11 +34,6 @@ export class MainController {
   }
 
   _onNumberTasksChange() {
-    this._filters.removeElement();
-    unrender(this._filters.getElement());
-
-    this._renderFilters(this._taskMock);
-    this._boardController = new BoardController(this._container, this._taskMock, this._onNumberTasksChange);
-    this._boardController.renderBoard();
+    console.log(`more tasks`);
   }
 }
