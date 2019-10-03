@@ -1,7 +1,7 @@
 import {SearchTemplate} from "../components/search";
 import {Filters} from "../components/filter";
 import {BoardController} from "./BoardController";
-import {Position, render, unrender} from "../helpers";
+import {Position, render} from "../helpers";
 
 export class MainController {
   constructor(container, filters, taskMocks) {
