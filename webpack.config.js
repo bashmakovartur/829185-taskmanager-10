@@ -1,17 +1,14 @@
-const path = require(`path`),
-      HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require(`path`);
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: `development`,
-  entry: `./src/main.js`,
+  entry: `./src/index.js`,
   output: {
     filename: `bundle.js`,
     path:
       path.join(__dirname, `public`)
   },
-  plugins: [new HtmlWebpackPlugin({
-    template:
-  })],
   module: {
     rules: [
       {
@@ -23,14 +20,23 @@ module.exports = {
           ]
       },
       {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader'
+      },
+      {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: `babel-loader`
         }
       }
     ]
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: `./src/index.html`
+    })
+  ],
   devtool: `source-map`,
   devServer: {
     writeToDisk: true,
