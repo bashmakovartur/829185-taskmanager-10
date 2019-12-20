@@ -21,7 +21,6 @@ class Controls extends Component {
                             name="control"
                             id="control__task"
                             className="control__input visually-hidden"
-                            checked
                         />
                         <label htmlFor="control__task" className="control__label">TASKS</label>
                         <input

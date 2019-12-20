@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 class Filters extends Component {
     render() {
+
         return (
             <section className="main__filter filter container">
                 <input
@@ -9,7 +10,6 @@ class Filters extends Component {
                     id="filter__all"
                     className="filter__input visually-hidden"
                     name="filter"
-                    checked
                 />
                 <label htmlFor="filter__all" className="filter__label">
                     All <span className="filter__all-count">13</span></label
