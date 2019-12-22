@@ -10,7 +10,7 @@ class TasksContainer extends Component {
             <section className="board container">
                 <TaskFilters />
                 <TaskWrapper arr={this.props.arr}/>
-                <LoadMoreButton />
+                <LoadMoreButton updateTasks={this.props.updateTasks} />
             </section>
         );
     }

@@ -7,15 +7,24 @@ import '../../static/css/style.css';
 import '../../static/css/normalize.css';
 import mockTasks from './mocks.js';
 
+const maxTasks = mockTasks;
+const minTasks = maxTasks.slice(0,8);
+
 class App extends Component {
     constructor() {
         super();
         this.state = {
-            tasks: mockTasks,
+            tasks: minTasks,
             searchField: '',
-            filter: ''
+            filter: '',
+            count: ''
         };
     }
+
+    updateTasks = (e) => {
+        this.setState({ tasks: maxTasks });
+        e.target.classList.add('visually-hidden');
+    };
 
     onSearchChange = (event) => {
         this.setState({searchField: event.target.value});
@@ -32,7 +41,7 @@ class App extends Component {
                 <Controls />
                 <Search searchChange={this.onSearchChange}/>
                 <Filters arr={filteredTasks}/>
-                <TasksContainer arr={filteredTasks}/>
+                <TasksContainer updateTasks={this.updateTasks} arr={filteredTasks}/>
             </div>
         );
     }

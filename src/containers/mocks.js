@@ -14,6 +14,6 @@ const mockTask = () => ({
         isToday: Math.random() >= 0.5
 });
 
-const mockTasks = new Array(8).fill(``).map(mockTask);
+const mockTasks = new Array(16).fill(``).map(mockTask);
 
 export default mockTasks;
