@@ -1,78 +1,65 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
-class Filters extends Component {
-    render() {
+const filters = ['all', 'overdue', 'today', 'favorites', 'repeating', 'tags', 'archive'];
 
-        return (
-            <section className="main__filter filter container">
-                <input
-                    type="radio"
-                    id="filter__all"
-                    className="filter__input visually-hidden"
-                    name="filter"
-                />
-                <label htmlFor="filter__all" className="filter__label">
-                    All <span className="filter__all-count">13</span></label
-                >
-                <input
-                    type="radio"
-                    id="filter__overdue"
-                    className="filter__input visually-hidden"
-                    name="filter"
-                    disabled
-                />
-                <label htmlFor="filter__overdue" className="filter__label"
-                >Overdue <span className="filter__overdue-count">0</span></label
-                >
-                <input
-                    type="radio"
-                    id="filter__today"
-                    className="filter__input visually-hidden"
-                    name="filter"
-                    disabled
-                />
-                <label htmlFor="filter__today" className="filter__label"
-                >Today <span className="filter__today-count">0</span></label
-                >
-                <input
-                    type="radio"
-                    id="filter__favorites"
-                    className="filter__input visually-hidden"
-                    name="filter"
-                />
-                <label htmlFor="filter__favorites" className="filter__label"
-                >Favorites <span className="filter__favorites-count">1</span></label
-                >
-                <input
-                    type="radio"
-                    id="filter__repeating"
-                    className="filter__input visually-hidden"
-                    name="filter"
-                />
-                <label htmlFor="filter__repeating" className="filter__label"
-                >Repeating <span className="filter__repeating-count">1</span></label
-                >
-                <input
-                    type="radio"
-                    id="filter__tags"
-                    className="filter__input visually-hidden"
-                    name="filter"
-                />
-                <label htmlFor="filter__tags" className="filter__label"
-                >Tags <span className="filter__tags-count">1</span></label
-                >
-                <input
-                    type="radio"
-                    id="filter__archive"
-                    className="filter__input visually-hidden"
-                    name="filter"
-                />
-                <label htmlFor="filter__archive" className="filter__label"
-                >Archive <span className="filter__archive-count">115</span></label
-                >
-            </section>
-        );
-    }
-}
+const Filters = ({arr}) => {
+    console.log(arr);
+    const getCount = (arr, field) => {
+        switch (field) {
+            case 'all':
+                return arr.length;
+                break;
+            case 'overdue':
+                return arr.filter(item => item.isOverdue === true).length;
+                break;
+            case 'today':
+                return arr.filter(item => item.isToday === true).length;
+                break;
+            case 'favorites':
+                return arr.filter(item => item.isFavorite === true).length;
+                break;
+            case 'repeating':
+                return arr.filter(item => item.isRepeating === true).length;
+                break;
+            case 'tags':
+                return arr.filter(item => item.hashTags.length !== 0).length;
+                break;
+            case 'archive':
+                return arr.filter(item => item.isArchive === true).length;
+                break;
+            default:
+                0;
+                break
+        }
+    };
+    const onFilterClick = (event) => {
+        console.log(event.target.value)
+    };
+
+    return (
+        <section className="main__filter filter container">
+            {filters.map((item, i) => {
+                return (<div key={i}>
+                    <input
+                        type="radio"
+                        id={`filter__${item}`}
+                        className="filter__input visually-hidden"
+                        name="filter"
+                        value={item}
+                    />
+                    <label
+                        htmlFor={`filter__${item}`}
+                        className="filter__label"
+                    >
+                        {item}
+                        <span className={`filter__${item}-count`}>
+                                &nbsp;{getCount(arr, item)}
+                        </span>
+                    </label>
+                </div>)
+            })}
+        </section>
+    );
+};
 
 export default Filters;

@@ -1,4 +1,4 @@
-const hashTags = ['some', 'hash', 'tags', 'and', 'shit'];
+const hashTags = ['some', 'hash', 'taGs', 'and', 'shIt'];
 const text = ['eat', 'sleep', 'rave', 'repeat', 'code'];
 const colors = ['black', 'blue', 'green', 'pink', 'red', 'yellow'];
 const mockTask = () => ({
@@ -9,8 +9,10 @@ const mockTask = () => ({
         isRepeating: Math.random() >= 0.5,
         isDeadline: Math.random() >= 0.5,
         isFavorite: Math.random() >= 0.5,
-        isArchive: Math.random() >= 0.5
-    });
+        isArchive: Math.random() >= 0.5,
+        isOverdue: Math.random() >= 0.5,
+        isToday: Math.random() >= 0.5
+});
 
 const mockTasks = new Array(8).fill(``).map(mockTask);
 

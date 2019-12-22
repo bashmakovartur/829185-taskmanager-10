@@ -8,15 +8,31 @@ import '../../static/css/normalize.css';
 import mockTasks from './mocks.js';
 
 class App extends Component {
+    constructor() {
+        super();
+        this.state = {
+            tasks: mockTasks,
+            searchField: '',
+            filter: ''
+        };
+    }
+
+    onSearchChange = (event) => {
+        this.setState({searchField: event.target.value});
+    };
+
     render() {
-        console.log(mockTasks);
+        const filteredTasks = this.state.tasks.filter(tasks => {
+            const regExp = this.state.searchField.toString().toLowerCase().trim();
+            return  tasks.hashTags.join('').toLowerCase().match(regExp);
+        });
 
         return (
             <div>
                 <Controls />
-                <Search />
-                <Filters arr={mockTasks}/>
-                <TasksContainer arr={mockTasks}/>
+                <Search searchChange={this.onSearchChange}/>
+                <Filters arr={filteredTasks}/>
+                <TasksContainer arr={filteredTasks}/>
             </div>
         );
     }

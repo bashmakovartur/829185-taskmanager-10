@@ -6,7 +6,7 @@ class TaskWrapper extends Component {
     render() {
         return (
             <div className="board__tasks">
-                {this.props.arr.map((item, index) => {
+                {this.props.arr && this.props.arr.map((item, index) => {
                     return (<Task
                         key = {index}
                         color = {item.color}
