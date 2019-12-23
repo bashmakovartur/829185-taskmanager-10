@@ -1,9 +1,8 @@
-import React, {Component} from "react";
+import React from "react";
 
 const filters = ['all', 'overdue', 'today', 'favorites', 'repeating', 'tags', 'archive'];
 
 const Filters = ({arr}) => {
-    console.log(arr);
     const getCount = (arr, field) => {
         switch (field) {
             case 'all':
@@ -31,9 +30,6 @@ const Filters = ({arr}) => {
                 0;
                 break
         }
-    };
-    const onFilterClick = (event) => {
-        console.log(event.target.value)
     };
 
     return (

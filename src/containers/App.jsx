@@ -16,6 +16,7 @@ class App extends Component {
         this.state = {
             tasks: minTasks,
             searchField: '',
+            searchType: '',
             filter: '',
             count: ''
         };
@@ -27,13 +28,42 @@ class App extends Component {
     };
 
     onSearchChange = (event) => {
-        this.setState({searchField: event.target.value});
+        const query = event.target.value;
+        const firstChar = query.substr(0,1).trim();
+        if (firstChar === '#') {
+            this.setState({searchType: 'hashtag'});
+        } else if (Number.isInteger(parseInt(firstChar))) {
+            this.setState({searchType: 'number'});
+        } else {
+            this.setState({searchType: 'text'});
+        }
+
+        if (query.substr(0,1) === '#') {
+            this.setState({searchField: query.slice(1)});
+        } else {
+            this.setState({searchField: query });
+        }
     };
 
     render() {
         const filteredTasks = this.state.tasks.filter(tasks => {
-            const regExp = this.state.searchField.toString().toLowerCase().trim();
-            return  tasks.hashTags.join('').toLowerCase().match(regExp);
+            const query = this.state.searchField.toString().toLowerCase().trim();
+            let target  = '';
+            switch (this.state.searchType) {
+                case 'hashtag':
+                    target = tasks.hashTags.join('').toLowerCase().trim();
+                    break;
+                case 'number':
+                    const date = new Date(tasks.dateValue);
+                    console.log(date);
+                    target = date.toLocaleDateString("en-US", { day: 'numeric'});
+                    break;
+                default:
+                    target = tasks.titleText.toLowerCase().trim();
+                    break;
+            }
+
+            return  target.includes(query);
         });
 
         return (
