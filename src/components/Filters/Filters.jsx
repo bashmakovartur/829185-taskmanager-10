@@ -2,7 +2,7 @@ import React from "react";
 
 const filters = ['all', 'overdue', 'today', 'favorites', 'repeating', 'tags', 'archive'];
 
-const Filters = ({arr}) => {
+const Filters = ({arr, filterTasks}) => {
     const getCount = (arr, field) => {
         switch (field) {
             case 'all':
@@ -41,7 +41,8 @@ const Filters = ({arr}) => {
                         id={`filter__${item}`}
                         className="filter__input visually-hidden"
                         name="filter"
-                        value={item}
+                        data-type={item}
+                        onChange={filterTasks}
                     />
                     <label
                         htmlFor={`filter__${item}`}

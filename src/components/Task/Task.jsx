@@ -19,7 +19,7 @@ class Task extends Component {
         const deadlineClass = isDeadline ? ' card--deadline' : '';
 
         return (
-            <div>
+
                 <article className={`card`+ colorClass + repeatingClass + deadlineClass}>
                     <div className="card__form">
                         <div className="card__inner">
@@ -62,7 +62,8 @@ class Task extends Component {
                                             <p className="card__input-deadline-wrap">
                                                 <span className="card__date">
                                                     {new Date(dateValue).toLocaleDateString("en-US", { day: 'numeric'})}&nbsp;
-                                                    {new Date(dateValue).toLocaleDateString("en-US", { month: 'long'})}
+                                                    {new Date(dateValue).toLocaleDateString("en-US", { month: 'long'})}&nbsp;
+                                                    {new Date(dateValue).toLocaleDateString("en-US", { year: 'numeric'})}
                                                 </span>
                                                 <span className="card__time">{new Date(dateValue).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit'})}</span>
                                             </p>
@@ -85,7 +86,6 @@ class Task extends Component {
                         </div>
                     </div>
                 </article>
-            </div>
         );
     }
 }
